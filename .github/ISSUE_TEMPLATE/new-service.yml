@@ -1,0 +1,47 @@
+name: 🚀 New Service
+description: Scaffold a new Observatory microservice
+title: "[SERVICE] "
+labels: ["service", "enhancement"]
+body:
+  - type: input
+    id: service-name
+    attributes:
+      label: Service name
+      placeholder: e.g. alert-svc
+    validations:
+      required: true
+
+  - type: textarea
+    id: responsibilities
+    attributes:
+      label: Responsibilities
+      description: What does this service do?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: datastore
+    attributes:
+      label: Data store
+      options:
+        - PostgreSQL
+        - Redis
+        - PostgreSQL + Redis
+        - None (stateless)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: Repository created
+        - label: Go project scaffolded (cmd/, internal/)
+        - label: Dockerfile (distroless)
+        - label: devsecops.yml workflow
+        - label: release.yml workflow
+        - label: Helm chart added to helm-charts repo
+        - label: ArgoCD Application in k8s-home-lab
+        - label: Service docs added to observatory/docs/services/
+        - label: ADR written (if architectural decision made)

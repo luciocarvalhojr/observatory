@@ -1,0 +1,42 @@
+name: 🐛 Bug Report
+description: Report an issue with a service or pipeline
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: service
+    attributes:
+      label: Affected service
+      options:
+        - api-gateway
+        - auth-svc
+        - user-svc
+        - alert-svc
+        - notify-svc
+        - incident-svc
+        - pipeline / CI
+        - helm-charts
+        - k8s-home-lab
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      render: shell

@@ -1,0 +1,41 @@
+---
+title: Observatory DevSecOps Pipeline
+---
+flowchart LR
+    subgraph PR["Pull Request"]
+        GL[gitleaks\nsecret scan]
+        LINT[golangci-lint]
+        GOSEC[gosec\nSAST]
+        VULN[govulncheck\nSCA]
+        TEST[go test\n-race -cover]
+        GL --> LINT --> GOSEC --> VULN --> TEST
+    end
+
+    subgraph RELEASE["Release (on tag)"]
+        BUILD[docker build\ndistroless]
+        TRIVY[trivy scan\nblock CRITICAL/HIGH]
+        PUSH[push to GHCR]
+        SBOM[generate SBOM\nattach to release]
+        SIGN[cosign sign\nkeyless OIDC]
+        DISPATCH[workflow_dispatch\nhelm-charts PR]
+        BUILD --> TRIVY --> PUSH --> SBOM --> SIGN --> DISPATCH
+    end
+
+    subgraph DEPLOY["Deploy (ArgoCD)"]
+        KYVERNO[kyverno\nverify signature]
+        SCHED[schedule pod]
+        KYVERNO --> SCHED
+    end
+
+    subgraph RUNTIME["Runtime (continuous)"]
+        TRIVYOP[trivy-operator\ncontinuous scan]
+        FALCO[falco\nruntime anomaly]
+        GRAF[grafana\nsecurity dashboard]
+        TRIVYOP --> GRAF
+        FALCO --> GRAF
+    end
+
+    TEST -->|merge to main\nsemantic-release| BUILD
+    DISPATCH -->|PR merged\nchart-releaser| KYVERNO
+    SCHED --> TRIVYOP
+    SCHED --> FALCO

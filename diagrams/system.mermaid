@@ -1,0 +1,59 @@
+---
+title: Observatory System Architecture
+---
+graph TB
+    subgraph Internet
+        User((User))
+    end
+
+    subgraph K3s Cluster
+        Traefik[Traefik\nIngress + TLS]
+
+        subgraph observatory namespace
+            GW[api-gateway\n:8080]
+            AUTH[auth-svc\n:8081]
+            USR[user-svc\n:8082]
+            ALERT[alert-svc\n:8083]
+            NOTIFY[notify-svc\n:8084]
+            INC[incident-svc\n:8085]
+        end
+
+        subgraph observatory-data namespace
+            NATS[(NATS\nJetStream)]
+            PG1[(PostgreSQL\nuser-svc)]
+            PG2[(PostgreSQL\nalert-svc)]
+            PG3[(PostgreSQL\nincident-svc)]
+            REDIS[(Redis\nauth + alert)]
+        end
+
+        subgraph monitoring namespace
+            PROM[Prometheus]
+        end
+    end
+
+    subgraph External
+        SLACK[Slack]
+        LETSENCRYPT[Let's Encrypt]
+    end
+
+    User -->|HTTPS| Traefik
+    Traefik --> GW
+    GW -->|validate token| AUTH
+    GW -->|REST| USR
+    GW -->|REST| ALERT
+    GW -->|REST| INC
+
+    AUTH --- REDIS
+    USR --- PG1
+    ALERT --- PG2
+    ALERT --- REDIS
+    INC --- PG3
+
+    ALERT -->|poll metrics| PROM
+    ALERT -->|alert.fired\nalert.resolved| NATS
+    USR -->|user.created| NATS
+    NATS -->|consume| NOTIFY
+    NATS -->|consume| INC
+
+    NOTIFY -->|send| SLACK
+    Traefik -.->|ACME| LETSENCRYPT
