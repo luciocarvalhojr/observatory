@@ -41,7 +41,7 @@ This project exists to demonstrate:
 
 | Service | Description | Tech | Status |
 |---|---|---|---|
-| [api-gateway](docs/services/api-gateway.md) | Entry point, routing, rate limiting | Go + Gin | 🟡 Planned |
+| [api-gateway](docs/services/api-gateway.md) | Entry point, routing, rate limiting | Traefik or Kong | 🟡 Planned |
 | [auth-svc](docs/services/auth-svc.md) | JWT auth, OIDC integration | Go + Gin + Redis | 🟡 Planned |
 | [user-svc](docs/services/user-svc.md) | User management | Go + Gin + PostgreSQL | 🟡 Planned |
 | [alert-svc](docs/services/alert-svc.md) | Alert rules engine | Go + Gin + PostgreSQL + Redis | 🟡 Planned |
