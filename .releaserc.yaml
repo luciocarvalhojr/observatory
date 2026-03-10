@@ -1,0 +1,7 @@
+# observatory-*-svc/.releaserc.yaml
+extends: "https://raw.githubusercontent.com/luciocarvalhojr/observatory/main/configs/.releaserc.yaml"
+
+# Override only if needed, e.g. add extra assets:
+# plugins:
+#   - - "@semantic-release/exec"
+#     - publishCmd: "some extra publish step"

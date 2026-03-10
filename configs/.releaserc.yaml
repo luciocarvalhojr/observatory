@@ -12,6 +12,7 @@
 #     - - "@semantic-release/exec"
 #       - prepareCmd: "custom command"
 # =============================================================================
+ci: true
 
 branches:
   - main
