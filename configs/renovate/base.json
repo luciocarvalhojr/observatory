@@ -1,0 +1,70 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Observatory — shared Renovate base config. Extended by all repos.",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separatePatchReleases"
+  ],
+
+  "labels": ["dependencies"],
+  "reviewers": ["luciocarvalhojr"],
+  "assignees": ["luciocarvalhojr"],
+
+  "schedule": ["before 6am on Monday"],
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 10,
+
+  "packageRules": [
+    {
+      "description": "Group all Go minor + patch updates together",
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Go dependencies",
+      "automerge": false
+    },
+    {
+      "description": "Automerge Go patch-only updates (low risk)",
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Go toolchain version — never automerge, needs review",
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["golang"],
+      "automerge": false,
+      "labels": ["dependencies", "go-version"]
+    },
+    {
+      "description": "Docker base image updates — needs review",
+      "matchManagers": ["dockerfile"],
+      "automerge": false,
+      "labels": ["dependencies", "docker"]
+    },
+    {
+      "description": "Helm chart updates — needs review",
+      "matchManagers": ["helm-values", "helmv3"],
+      "automerge": false,
+      "labels": ["dependencies", "helm"]
+    }
+  ],
+
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "automerge": false
+  },
+
+  "osvVulnerabilityAlerts": true
+}
