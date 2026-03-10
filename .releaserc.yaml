@@ -1,7 +1,55 @@
-# observatory-*-svc/.releaserc.yaml
-extends: "https://raw.githubusercontent.com/luciocarvalhojr/observatory/main/configs/.releaserc.yaml"
+# =============================================================================
+# Observatory — Shared semantic-release configuration
+# Source of truth: github.com/luciocarvalhojr/observatory
+#
+# Usage in each service:
+#   # .releaserc.yaml
+#   extends: "https://raw.githubusercontent.com/luciocarvalhojr/observatory/main/configs/.releaserc.yaml"
+#
+# Override only what differs per service, e.g.:
+#   extends: "..."
+#   plugins:
+#     - - "@semantic-release/exec"
+#       - prepareCmd: "custom command"
+# =============================================================================
+ci: true
 
-# Override only if needed, e.g. add extra assets:
-# plugins:
-#   - - "@semantic-release/exec"
-#     - publishCmd: "some extra publish step"
+branches:
+  - main
+
+plugins:
+  - "@semantic-release/commit-analyzer"
+
+  - - "@semantic-release/release-notes-generator"
+    - preset: conventionalcommits
+      presetConfig:
+        types:
+          - type: feat
+            section: "✨ Features"
+          - type: fix
+            section: "🐛 Bug Fixes"
+          - type: perf
+            section: "⚡ Performance"
+          - type: refactor
+            section: "♻️ Refactoring"
+          - type: docs
+            section: "📚 Documentation"
+          - type: chore
+            section: "🔧 Chores"
+            hidden: false
+          - type: ci
+            section: "👷 CI/CD"
+            hidden: false
+
+  - - "@semantic-release/changelog"
+    - changelogFile: CHANGELOG.md
+
+  - - "@semantic-release/github"
+    - assets:
+        - path: CHANGELOG.md
+          label: Changelog
+
+  - - "@semantic-release/git"
+    - assets:
+        - CHANGELOG.md
+      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
