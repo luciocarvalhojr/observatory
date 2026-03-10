@@ -39,14 +39,14 @@ This project exists to demonstrate:
 
 ## 🏗️ Services
 
-| Service | Description | Tech | Status |
-|---|---|---|---|
-| [api-gateway](docs/services/api-gateway.md) | Entry point, routing, rate limiting | Traefik or Kong | 🟡 Planned |
-| [auth-svc](docs/services/auth-svc.md) | JWT auth, OIDC integration | Go + Gin + Redis | 🟡 Planned |
-| [user-svc](docs/services/user-svc.md) | User management | Go + Gin + PostgreSQL | 🟡 Planned |
-| [alert-svc](docs/services/alert-svc.md) | Alert rules engine | Go + Gin + PostgreSQL + Redis | 🟡 Planned |
-| [notify-svc](docs/services/notify-svc.md) | Notification delivery | Go + Gin + NATS | 🟡 Planned |
-| [incident-svc](docs/services/incident-svc.md) | Incident tracking | Go + Gin + PostgreSQL | 🟡 Planned |
+| Service | Description | Tech | Version |
+| --- | --- | --- | --- |
+| [api-gateway](docs/services/api-gateway.md) | Entry point, routing, rate limiting | Traefik or Kong | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-api-gateway?label=&color=blue) |
+| [auth-svc](docs/services/auth-svc.md) | JWT auth, OIDC integration | Go + Gin + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-auth-svc?label=&color=blue) |
+| [user-svc](docs/services/user-svc.md) | User management | Go + Gin + PostgreSQL | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-user-svc?label=&color=blue) |
+| [alert-svc](docs/services/alert-svc.md) | Alert rules engine | Go + Gin + PostgreSQL + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-alert-svc?label=&color=blue) |
+| [notify-svc](docs/services/notify-svc.md) | Notification delivery | Go + Gin + NATS | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-notify-svc?label=&color=blue) |
+| [incident-svc](docs/services/incident-svc.md) | Incident tracking | Go + Gin + PostgreSQL | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-incident-svc?label=&color=blue) |
 
 **Status:** 🟢 Live · 🔵 In Progress · 🟡 Planned · 🔴 Deprecated
 
