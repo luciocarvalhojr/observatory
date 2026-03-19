@@ -157,7 +157,7 @@ Commit → lint → test → SAST → SCA → secret scan
 | Repository | Description |
 | --- | --- |
 | [observatory-auth-svc](https://github.com/luciocarvalhojr/observatory-auth-svc) | Auth service |
-| [observatory-api-gateway](https://github.com/luciocarvalhojr/observatory-api-gateway) | API Gateway service |
+| [observatory-api-gateway](https://github.com/luciocarvalhojr/observatory-api-gateway) | ~~Deprecated~~ — replaced by Traefik forwardAuth middleware |
 | [observatory-user-svc](https://github.com/luciocarvalhojr/observatory-user-svc) | User service |
 | [observatory-alert-svc](https://github.com/luciocarvalhojr/observatory-alert-svc) | Alert service |
 | [observatory-notify-svc](https://github.com/luciocarvalhojr/observatory-notify-svc) | Notify service |
@@ -185,10 +185,10 @@ kubectl apply -f https://raw.githubusercontent.com/luciocarvalhojr/k8s-home-lab/
 ```bash
 helm repo add luciocarvalhojr https://luciocarvalhojr.github.io/helm-charts
 helm repo update
-helm install auth-svc luciocarvalhojr/go-api \
+helm install observatory-auth-svc luciocarvalhojr/observatory-auth-svc \
   --namespace observatory \
   --create-namespace \
-  -f ./observatory-auth-svc/values.yaml
+  -f ./k8s-home-lab/apps/observatory/auth-svc-values.yaml
 ```
 
 ---

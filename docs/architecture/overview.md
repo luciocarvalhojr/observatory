@@ -41,10 +41,11 @@ Internet ──► Traefik ──────►   forwardAuth → auth-svc:8081
 Used for: user-facing queries, CRUD operations, health checks
 
 ```
-api-gateway ──REST──► auth-svc      (token validation)
-api-gateway ──REST──► user-svc      (user operations)
-api-gateway ──REST──► alert-svc     (alert rule management)
-api-gateway ──REST──► incident-svc  (incident queries)
+Traefik ──forwardAuth──► auth-svc   (token validation on every protected request)
+Traefik ──REST──► auth-svc          (OIDC flows: login, callback, logout)
+Traefik ──REST──► user-svc          (user operations)
+Traefik ──REST──► alert-svc         (alert rule management)
+Traefik ──REST──► incident-svc      (incident queries)
 ```
 
 ### Asynchronous (NATS)
@@ -165,12 +166,12 @@ ArgoCD Application
         ▼
 K3s Cluster
   ├── Namespace: observatory
-  │     ├── api-gateway
   │     ├── auth-svc
   │     ├── user-svc
   │     ├── alert-svc
   │     ├── notify-svc
   │     └── incident-svc
+  │     (API Gateway = Traefik — runs in kube-system, not observatory)
   ├── Namespace: observatory-data
   │     ├── PostgreSQL clusters (CloudNativePG)
   │     ├── Redis
