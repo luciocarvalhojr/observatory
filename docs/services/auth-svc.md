@@ -5,7 +5,7 @@ Handles authentication and authorization for the Observatory platform.
 Issues and validates JWT tokens, integrates with the cluster OIDC provider (Headlamp IDP),
 and manages token revocation via Redis.
 
-**Status:** 🟡 Planned
+**Status:** 🟢 Deployed — v1.6.0
 **Repository:** [observatory-auth-svc](https://github.com/luciocarvalhojr/observatory-auth-svc)
 
 ---

@@ -3,13 +3,15 @@
 ## Phase 1 — Foundation 🏗️
 > Goal: Core services running in cluster with basic pipeline
 
-- [ ] `auth-svc` — JWT issue/validate, Redis session store
-- [ ] `user-svc` — User CRUD, PostgreSQL, domain events
-- [ ] `api-gateway` — Routing, rate limiting, circuit breaker
-- [ ] Helm charts for all 3 services
-- [ ] ArgoCD Applications in k8s-home-lab
-- [ ] Basic `devsecops.yml` per service (lint + test + trivy)
-- [ ] TLS via cert-manager + Traefik Ingress
+- [x] `auth-svc` — JWT issue/validate, Redis session store — **deployed v1.6.0**
+- [ ] `user-svc` — User CRUD, PostgreSQL, domain events — **scaffolded, not released**
+- [ ] `api-gateway` — Routing, auth delegation, reverse proxy — **scaffolded, not released**
+- [x] Helm chart for `auth-svc` (observatory-auth-svc 0.1.3)
+- [ ] Helm charts for `user-svc` and `api-gateway`
+- [x] ArgoCD Application for `auth-svc` in k8s-home-lab
+- [ ] ArgoCD Applications for `user-svc` and `api-gateway`
+- [x] Basic `devsecops.yml` per service (lint + test + trivy) — auth-svc deployed; user-svc + api-gateway scaffolded
+- [x] TLS via cert-manager + Traefik Ingress
 
 ## Phase 2 — Core Domain 🚨
 > Goal: Alert rules engine and notifications working end-to-end
@@ -24,10 +26,10 @@
 ## Phase 3 — Full DevSecOps 🔒
 > Goal: Complete security pipeline from commit to runtime
 
-- [ ] Gitleaks in all service pipelines
-- [ ] Coverage gate (80%) enforced in CI
-- [ ] SBOM generation + attached to GitHub releases
-- [ ] Cosign keyless image signing
+- [x] Gitleaks in all service pipelines (auth-svc deployed; user-svc + api-gateway scaffolded)
+- [ ] Coverage gate (80%) enforced in CI — currently 0% on all services
+- [x] SBOM generation + attached to GitHub releases (auth-svc)
+- [x] Cosign keyless image signing (auth-svc)
 - [ ] Kyverno policies: signature verify + approved registry
 - [ ] Gatekeeper: no privileged, readOnlyRootFilesystem
 - [ ] Falco installed in cluster

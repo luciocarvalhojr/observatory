@@ -87,11 +87,13 @@ Security is applied at every layer: code, build, deploy, and runtime.
 
 ```
 .github/workflows/
-├── devsecops.yml     # runs on PR → test + lint + security
-└── release.yml       # runs on tag → build + push + sign + dispatch
+└── devsecops.yml     # single unified pipeline — PR gates + release + deploy
 ```
 
-### devsecops.yml structure
+All stages are in one file. Release and deploy jobs are gated on `github.ref == 'refs/heads/main'`
+so they only run on merge, not on PRs.
+
+### devsecops.yml job chain
 
 ```yaml
 on:
@@ -101,21 +103,12 @@ on:
     branches: [main]
 
 jobs:
-  test-and-lint:      # golangci-lint + go test + swagger verify
+  test-and-lint:      # golangci-lint + go test + coverage gate + swagger verify
   security-scan:      # gitleaks + gosec + govulncheck
-  docker-scan:        # build image + trivy (needs: test-and-lint, security-scan)
-```
-
-### release.yml structure
-
-```yaml
-on:
-  release:
-    types: [published]   # semantic-release creates tag → this fires
-
-jobs:
-  build-and-push:         # docker build + push to GHCR + trivy + SBOM + cosign
-  trigger-helm-update:    # workflow_dispatch to helm-charts repo
+  docker-scan:        # build image + trivy scan (needs: test-and-lint, security-scan)
+  release:            # semantic-release → creates GitHub tag/release (main only)
+  build-and-push:     # docker build + push to GHCR + trivy + SBOM + cosign (main, new release only)
+  update-helm-chart:  # opens PR on helm-charts repo to bump image tag (main, new release only)
 ```
 
 ---
