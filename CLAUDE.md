@@ -16,14 +16,14 @@ This repo is the **platform library** (shared configs, docs, ADRs). Application 
 |---------------|---------------------------------|---------|------------------------------------|
 | auth-svc      | 🟢 Deployed                     | v1.6.0  | Helm chart 0.1.3, ArgoCD synced    |
 | user-svc      | 🔨 Scaffolded — not released    | —       | Repo local, needs GitHub + Helm    |
-| api-gateway   | 🔨 Scaffolded — not released    | —       | Repo local, needs GitHub + Helm    |
+| api-gateway   | ✅ Implemented via Traefik      | —       | `forwardAuth` middleware in k8s-home-lab; no custom service |
 | alert-svc     | ⬜ Not started                  | —       |                                    |
 | notify-svc    | ⬜ Not started                  | —       |                                    |
 | incident-svc  | ⬜ Not started                  | —       |                                    |
 
 ## In Progress
 
-- **user-svc + api-gateway scaffolded locally** — need GitHub repos created, `go mod tidy` done, first commit, Helm charts, and ArgoCD Applications.
+- **user-svc scaffolded** — needs Helm chart in `helm-charts` and ArgoCD Application in `k8s-home-lab`.
 - **Release tooling migration:** Attempting to migrate from semantic-release to release-please (ADR-000). Currently blocked — the `extends` URL approach was tried and reverted. Migration to release-please has not started.
 
 ## Known Issues
@@ -36,9 +36,8 @@ This repo is the **platform library** (shared configs, docs, ADRs). Application 
 
 ## Next Steps
 
-1. Create GitHub repos for `user-svc` and `api-gateway`; push first commit via feature branch.
-2. Add Helm charts for `user-svc` and `api-gateway` in `helm-charts` repo.
-3. Add ArgoCD Applications in `k8s-home-lab` for both services.
+1. Add Helm chart for `user-svc` in `helm-charts` repo.
+2. Add ArgoCD Application in `k8s-home-lab` for `user-svc`.
 4. Seal `JWT_SECRET` in `k8s-home-lab` (see `apps/observatory/README.md:38`).
 5. Write tests for `auth-svc` — raise coverage gate from 0% to 80%.
 6. Fix `configs/.go-version` — add `1.26.1`.

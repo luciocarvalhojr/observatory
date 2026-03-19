@@ -5,11 +5,12 @@
 
 - [x] `auth-svc` — JWT issue/validate, Redis session store — **deployed v1.6.0**
 - [ ] `user-svc` — User CRUD, PostgreSQL, domain events — **scaffolded, not released**
-- [ ] `api-gateway` — Routing, auth delegation, reverse proxy — **scaffolded, not released**
+- [x] `api-gateway` — Implemented via Traefik `forwardAuth` middleware (no custom service)
 - [x] Helm chart for `auth-svc` (observatory-auth-svc 0.1.3)
-- [ ] Helm charts for `user-svc` and `api-gateway`
+- [ ] Helm chart for `user-svc`
 - [x] ArgoCD Application for `auth-svc` in k8s-home-lab
-- [ ] ArgoCD Applications for `user-svc` and `api-gateway`
+- [x] Traefik `forwardAuth` middleware manifest in k8s-home-lab (`apps/observatory/traefik-middleware-auth.yaml`)
+- [ ] ArgoCD Application for `user-svc`
 - [x] Basic `devsecops.yml` per service (lint + test + trivy) — auth-svc deployed; user-svc + api-gateway scaffolded
 - [x] TLS via cert-manager + Traefik Ingress
 

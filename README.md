@@ -43,14 +43,14 @@ This project exists to demonstrate:
 
 | Service | Description | Tech | Version |
 | --- | --- | --- | --- |
-| [api-gateway](docs/services/api-gateway.md) | Entry point, auth delegation, routing | Go + Gin + httputil | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-api-gateway?label=&color=lightgrey) |
+| [api-gateway](docs/services/api-gateway.md) | Routing + JWT validation via forwardAuth | Traefik (built-in) | — |
 | [auth-svc](docs/services/auth-svc.md) | JWT auth, OIDC integration | Go + Gin + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-auth-svc?label=&color=blue) |
 | [user-svc](docs/services/user-svc.md) | User management | Go + Gin + PostgreSQL | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-user-svc?label=&color=lightgrey) |
 | [alert-svc](docs/services/alert-svc.md) | Alert rules engine | Go + Gin + PostgreSQL + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-alert-svc?label=&color=lightgrey) |
 | [notify-svc](docs/services/notify-svc.md) | Notification delivery | Go + Gin + NATS | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-notify-svc?label=&color=lightgrey) |
 | [incident-svc](docs/services/incident-svc.md) | Incident tracking | Go + Gin + PostgreSQL | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-incident-svc?label=&color=lightgrey) |
 
-> Badges show the latest GitHub release. Grey = not yet released.
+> Badges show the latest GitHub release. Grey = not yet released. API Gateway is Traefik — no separate service or release.
 
 ---
 
@@ -111,7 +111,7 @@ Commit → lint → test → SAST → SCA → secret scan
 | GitOps | ArgoCD |
 | Packaging | Helm |
 | Ingress | Traefik |
-| API Gateway | Custom Go reverse proxy (httputil) |
+| API Gateway | Traefik forwardAuth middleware |
 | Identity Provider | authentik |
 | TLS | cert-manager + Let's Encrypt |
 | Storage | NFS CSI |

@@ -15,7 +15,8 @@ and a full DevSecOps pipeline.
                            ┌─────────────────────────────────────────┐
                            │              K3s Cluster                 │
                            │                                          │
-Internet ──► Traefik ──────►         api-gateway :8080               │
+                           │  Traefik (Ingress + API Gateway)         │
+Internet ──► Traefik ──────►   forwardAuth → auth-svc:8081/introspect│
               (TLS)        │              │                           │
                            │    ┌─────────┼──────────┐               │
                            │    ▼         ▼          ▼               │
@@ -75,12 +76,13 @@ Each service owns its data store. No shared databases.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ api-gateway                                                  │
+│ Traefik (API Gateway — Ingress Controller)                   │
 │  - No business logic                                         │
-│  - Rate limiting (per IP, per user)                          │
-│  - Auth token validation (delegates to auth-svc)             │
-│  - Circuit breaker per downstream service                    │
+│  - forwardAuth: delegates JWT validation to auth-svc         │
+│  - Rate limiting (rateLimit middleware)                      │
+│  - Circuit breaker (circuitBreaker middleware)               │
 │  - Request/response logging + tracing                        │
+│  - TLS termination via cert-manager                          │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
