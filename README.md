@@ -43,7 +43,7 @@ This project exists to demonstrate:
 
 | Service | Description | Tech | Version |
 | --- | --- | --- | --- |
-| [api-gateway](docs/services/api-gateway.md) | Entry point, routing, rate limiting | Traefik + Kong | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-api-gateway?label=&color=lightgrey) |
+| [api-gateway](docs/services/api-gateway.md) | Entry point, auth delegation, routing | Go + Gin + httputil | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-api-gateway?label=&color=lightgrey) |
 | [auth-svc](docs/services/auth-svc.md) | JWT auth, OIDC integration | Go + Gin + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-auth-svc?label=&color=blue) |
 | [user-svc](docs/services/user-svc.md) | User management | Go + Gin + PostgreSQL | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-user-svc?label=&color=lightgrey) |
 | [alert-svc](docs/services/alert-svc.md) | Alert rules engine | Go + Gin + PostgreSQL + Redis | ![version](https://img.shields.io/github/v/release/luciocarvalhojr/observatory-alert-svc?label=&color=lightgrey) |
@@ -97,7 +97,7 @@ Commit → lint → test → SAST → SCA → secret scan
 
 | Layer | Technology |
 | --- | --- |
-| Language | Go 1.24 |
+| Language | Go 1.26.1 |
 | Framework | Gin Gonic |
 | Message Broker | NATS |
 | Databases | PostgreSQL (CloudNativePG) + Redis |
@@ -111,7 +111,7 @@ Commit → lint → test → SAST → SCA → secret scan
 | GitOps | ArgoCD |
 | Packaging | Helm |
 | Ingress | Traefik |
-| API Gateway | Kong (planned) |
+| API Gateway | Custom Go reverse proxy (httputil) |
 | Identity Provider | authentik |
 | TLS | cert-manager + Let's Encrypt |
 | Storage | NFS CSI |
@@ -143,6 +143,8 @@ Commit → lint → test → SAST → SCA → secret scan
 | [observatory](https://github.com/luciocarvalhojr/observatory) | This repo — docs, shared configs & platform library |
 | [helm-charts](https://github.com/luciocarvalhojr/helm-charts) | Helm chart registry (GitHub Pages) |
 | [k8s-home-lab](https://github.com/luciocarvalhojr/k8s-home-lab) | K3s cluster GitOps (ArgoCD apps-of-apps) |
+| [infra-home-lab](https://github.com/luciocarvalhojr/infra-home-lab) | Terraform + Ansible — Proxmox VM provisioning and K3s install |
+| [terraform-modules](https://github.com/luciocarvalhojr/terraform-modules) | Reusable Terraform modules (proxmox-vm, dns-record, minio-bucket, k3s-node) |
 
 ### Templates
 
