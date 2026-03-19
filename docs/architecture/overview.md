@@ -15,7 +15,8 @@ and a full DevSecOps pipeline.
                            ┌─────────────────────────────────────────┐
                            │              K3s Cluster                 │
                            │                                          │
-Internet ──► Traefik ──────►         api-gateway :8080               │
+                           │  Traefik (Ingress + API Gateway)         │
+Internet ──► Traefik ──────►   forwardAuth → auth-svc:8081/introspect│
               (TLS)        │              │                           │
                            │    ┌─────────┼──────────┐               │
                            │    ▼         ▼          ▼               │
@@ -40,10 +41,11 @@ Internet ──► Traefik ──────►         api-gateway :8080      
 Used for: user-facing queries, CRUD operations, health checks
 
 ```
-api-gateway ──REST──► auth-svc      (token validation)
-api-gateway ──REST──► user-svc      (user operations)
-api-gateway ──REST──► alert-svc     (alert rule management)
-api-gateway ──REST──► incident-svc  (incident queries)
+Traefik ──forwardAuth──► auth-svc   (token validation on every protected request)
+Traefik ──REST──► auth-svc          (OIDC flows: login, callback, logout)
+Traefik ──REST──► user-svc          (user operations)
+Traefik ──REST──► alert-svc         (alert rule management)
+Traefik ──REST──► incident-svc      (incident queries)
 ```
 
 ### Asynchronous (NATS)
@@ -75,12 +77,13 @@ Each service owns its data store. No shared databases.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ api-gateway                                                  │
+│ Traefik (API Gateway — Ingress Controller)                   │
 │  - No business logic                                         │
-│  - Rate limiting (per IP, per user)                          │
-│  - Auth token validation (delegates to auth-svc)             │
-│  - Circuit breaker per downstream service                    │
+│  - forwardAuth: delegates JWT validation to auth-svc         │
+│  - Rate limiting (rateLimit middleware)                      │
+│  - Circuit breaker (circuitBreaker middleware)               │
 │  - Request/response logging + tracing                        │
+│  - TLS termination via cert-manager                          │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -163,12 +166,12 @@ ArgoCD Application
         ▼
 K3s Cluster
   ├── Namespace: observatory
-  │     ├── api-gateway
   │     ├── auth-svc
   │     ├── user-svc
   │     ├── alert-svc
   │     ├── notify-svc
   │     └── incident-svc
+  │     (API Gateway = Traefik — runs in kube-system, not observatory)
   ├── Namespace: observatory-data
   │     ├── PostgreSQL clusters (CloudNativePG)
   │     ├── Redis

@@ -5,12 +5,13 @@
 
 - [x] `auth-svc` — JWT issue/validate, Redis session store — **deployed v1.6.0**
 - [ ] `user-svc` — User CRUD, PostgreSQL, domain events — **scaffolded, not released**
-- [ ] `api-gateway` — Routing, auth delegation, reverse proxy — **scaffolded, not released**
+- [x] `api-gateway` — Implemented via Traefik `forwardAuth` middleware (no custom service)
 - [x] Helm chart for `auth-svc` (observatory-auth-svc 0.1.3)
-- [ ] Helm charts for `user-svc` and `api-gateway`
+- [ ] Helm chart for `user-svc`
 - [x] ArgoCD Application for `auth-svc` in k8s-home-lab
-- [ ] ArgoCD Applications for `user-svc` and `api-gateway`
-- [x] Basic `devsecops.yml` per service (lint + test + trivy) — auth-svc deployed; user-svc + api-gateway scaffolded
+- [x] Traefik `forwardAuth` middleware manifest in k8s-home-lab (`apps/observatory/traefik-middleware-auth.yaml`)
+- [ ] ArgoCD Application for `user-svc`
+- [x] Basic `devsecops.yml` per service (lint + test + trivy) — auth-svc deployed; user-svc scaffolded
 - [x] TLS via cert-manager + Traefik Ingress
 
 ## Phase 2 — Core Domain 🚨
@@ -26,7 +27,7 @@
 ## Phase 3 — Full DevSecOps 🔒
 > Goal: Complete security pipeline from commit to runtime
 
-- [x] Gitleaks in all service pipelines (auth-svc deployed; user-svc + api-gateway scaffolded)
+- [x] Gitleaks in all service pipelines (auth-svc deployed; user-svc scaffolded)
 - [ ] Coverage gate (80%) enforced in CI — currently 0% on all services
 - [x] SBOM generation + attached to GitHub releases (auth-svc)
 - [x] Cosign keyless image signing (auth-svc)
@@ -41,7 +42,7 @@
 
 - [ ] OpenTelemetry SDK in all services
 - [ ] Jaeger deployed in cluster
-- [ ] Distributed traces across api-gateway → services
+- [ ] Distributed traces across Traefik → services
 - [ ] Grafana dashboards per service (RED metrics)
 - [ ] Grafana dashboard for security violations (Kyverno + Falco)
 - [ ] Alertmanager rules for platform health
@@ -50,7 +51,7 @@
 > Goal: Production-grade reliability and documentation
 
 - [ ] PodDisruptionBudget for all services
-- [ ] HorizontalPodAutoscaler for api-gateway + alert-svc
+- [ ] HorizontalPodAutoscaler for alert-svc + user-svc
 - [ ] NetworkPolicy — restrict pod-to-pod traffic
 - [ ] SealedSecrets for all sensitive config
 - [ ] Full API documentation (Swagger) for all services
